@@ -1,0 +1,9 @@
+
+CHIP Expand16 {
+    IN in;
+    OUT out[16];
+
+    PARTS:
+    Expand8(in=in, out=out[0..7]);
+    Expand8(in=in, out=out[8..15]);
+}

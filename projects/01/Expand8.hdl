@@ -1,0 +1,15 @@
+
+CHIP Expand8 {
+    IN in;
+    OUT out[8];
+
+    PARTS:
+    Wire(in=in, out=out[0]);
+    Wire(in=in, out=out[1]);
+    Wire(in=in, out=out[2]);
+    Wire(in=in, out=out[3]);
+    Wire(in=in, out=out[4]);
+    Wire(in=in, out=out[5]);
+    Wire(in=in, out=out[6]);
+    Wire(in=in, out=out[7]);
+}

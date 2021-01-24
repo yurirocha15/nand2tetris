@@ -16,5 +16,12 @@ CHIP Mux4Way16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Not(in=sel[1], out=nsel1);
+    Expand16(in=nsel1, out=nsel116b); //transform 1 bit into 16
+    Expand16(in=sel[1], out=sel116b); //transform 1 bit into 16
+    Mux16(a=a, b=b, sel=sel[0], out=m1);
+    Mux16(a=c, b=d, sel=sel[0], out=m2);
+    And16(a=nsel116b, b=m1, out=m3);
+    And16(a=sel116b, b=m2, out=m4);
+    Or16(a=m3, b=m4, out=out);
 }

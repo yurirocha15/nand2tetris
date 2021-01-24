@@ -1,0 +1,12 @@
+/*
+out = in
+*/
+
+CHIP Wire {
+    IN in;
+    OUT out;
+
+    PARTS:
+    Not(in=in, out=tmp);
+    Not(in=tmp, out=out);
+}
