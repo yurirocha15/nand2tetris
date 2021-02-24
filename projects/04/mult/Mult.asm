@@ -9,4 +9,36 @@
 // This program only needs to handle arguments that satisfy
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
+//     @0
+//     D=A
+//     @END
+//     R1;JEQ
+// (LOOP)
+//     D=D+R0
+//     R1=R1-1
+//     @LOOP
+//     R1;JGT
+// (END)
+//     R2=D
+
 // Put your code here.
+    @0
+    D=A
+    @2
+    M=D // Initialize R2 = 0
+    @1
+    D=M // Load R1
+    @END
+    D;JEQ // END if R1 == 0
+    @0
+    D=A
+(LOOP)
+    @0
+    D=M // Load R0
+    @2
+    M=D+M // R2 = D + R2
+    @1
+    MD=M-1 // D = R1 = R1 - 1
+    @LOOP
+    D;JGT // While R1 > 0
+(END)

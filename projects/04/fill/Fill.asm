@@ -12,3 +12,45 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+(LOOP)
+    @24576 // Keyboard input
+    D=M
+    @BLACK
+    D;JGT
+(WHITE)
+    @0
+    M=A // R0 = 0
+(WHITELOOP)
+    @0
+    D=M
+    @16384 // screen start memory
+    A=A+D // A = A + R0
+    D=0 // set every bit to 0
+    M=D
+    @0
+    MD=M+1
+    @8192 // 32 (words per line) * 256 lines
+    D=A-D
+    @WHITELOOP
+    D;JNE
+    @LOOP
+    0;JMP
+(BLACK)
+    @0
+    M=A // R0 = 0
+(BLACKLOOP)
+    @0 
+    D=M
+    @16384
+    A=A+D // A = A + R0
+    D=-1 // set every bit to 1
+    M=D
+    @0
+    MD=M+1
+    @8192 // 32 (words per line) * 256 lines
+    D=A-D
+    @BLACKLOOP
+    D;JNE
+    @LOOP
+    0;JMP
