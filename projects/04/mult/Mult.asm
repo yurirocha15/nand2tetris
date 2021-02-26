@@ -22,6 +22,10 @@
 //     R2=D
 
 // Put your code here.
+    @1
+    D=M
+    @i
+    M=D // i = R1
     @0
     D=A
     @2
@@ -30,15 +34,13 @@
     D=M // Load R1
     @END
     D;JEQ // END if R1 == 0
-    @0
-    D=A
 (LOOP)
     @0
     D=M // Load R0
     @2
     M=D+M // R2 = D + R2
-    @1
-    MD=M-1 // D = R1 = R1 - 1
+    @i
+    MD=M-1 // D = i = i - 1
     @LOOP
-    D;JGT // While R1 > 0
+    D;JGT // While i > 0
 (END)
