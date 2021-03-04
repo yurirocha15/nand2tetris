@@ -39,5 +39,25 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    // Control Logic
+    Not(in=instruction[15], out=loadIns); // is load instruction or not
+    Or(a=loadIns, b=instruction[5], out=loadA); // if is load or store on A, loadA is true
+    And(a=instruction[15], b=instruction[5], out=storeOnA); // only check store on A if op is not load
+    And(a=instruction[15], b=instruction[4], out=loadD); // only check store on D if op is not load
+    And(a=instruction[15], b=instruction[3], out=writeM); // only check store on M if op is not load
+    Mux16(a[0..14]=instruction[0..14], b=intout, sel=storeOnA, out=intA); // choose where A input is coming from
+    Mux16(a=A, b=inM, sel=instruction[12], out=AorM); // choose ALU second input
+    Or(a=outzr, b=outng, out=negORzr);
+    Not(in=negORzr, out=outpos); // flag that tells if output is negative
+    And(a=outng, b=instruction[2], out=jmp1);
+    And(a=outzr, b=instruction[1], out=jmp2);
+    And(a=outpos, b=instruction[0], out=jmp3);
+    Or(a=jmp1, b=jmp2, out=tmpjmp);
+    Or(a=tmpjmp, b=jmp3, out=tmpjmp2); // output if should jump
+    And(a=instruction[15], b=tmpjmp2, out=isjmp); // only jump if op is not load
+    // Parts
+    PC(in=A, load=isjmp, inc=true, reset=reset, out[0..14]=pc);
+    DRegister(in=intout, load=loadD, out=D);
+    ARegister(in=intA, load=loadA, out=A, out[0..14]=addressM);
+    ALU(x=D, y=AorM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, out=intout, zr=outzr, ng=outng);
 }
