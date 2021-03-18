@@ -38,6 +38,15 @@ class Assembler:
             "SCREEN": 16384,
             "KBD": 24576,
         }
+        self.dest_table: Dict[str, str] = {
+            "M": "001",
+            "D": "010",
+            "MD": "011",
+            "A": "100",
+            "AM": "101",
+            "AD": "110",
+            "ADM": "111",
+        }
         self.jump_table: Dict[str, str] = {
             "JGT": "001",
             "JEQ": "010",
@@ -138,13 +147,7 @@ class Assembler:
         dest_bin = "000"
         if '=' in line:
             dest, line = line.split('=')
-            for d in dest:
-                if d == 'A':
-                    dest_bin = '1' + dest_bin[1:]
-                elif d == 'D':
-                    dest_bin = dest_bin[0] + '1' + dest_bin[2]
-                elif d == 'M':
-                    dest_bin = dest_bin[:-1] + '1'
+            dest_bin = self.dest_table[dest]
 
         jmp_bin = "000"
         if ';' in line:
